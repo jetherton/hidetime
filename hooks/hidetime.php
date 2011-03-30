@@ -43,7 +43,11 @@ class hidetime {
 					//makes sure the user can turn on and off the time
 					plugin::add_javascript("hidetime/javascript/hidetime.js");
 					//gets the report id, if one exists
-					$report_id = Router::$arguments[0];
+					$report_id = "";
+					if(isset(Router::$arguments[0]))
+					{
+						$report_id = Router::$arguments[0];
+					}
 					//checks if the report ID is valid
 					if($report_id != null && $report_id != "")
 					{
@@ -55,7 +59,14 @@ class hidetime {
 							plugin::add_javascript("hidetime/javascript/hidetime_hide.js");
 						}
 					}
+					//draws the UI
 					Event::add('ushahidi_action.report_form_admin_after_time', array($this, '_report_form'));
+					
+					// hook in to get the data in the the form
+					Event::add('ushahidi_action.report_submit_admin', array($this, '_get_post_data'));
+					
+					// Hook into the report_edit (post_SAVE) event
+					Event::add('ushahidi_action.report_edit', array($this, '_incident_save_data'));
 				break;
 				
 				case 'view':
@@ -102,6 +113,32 @@ class hidetime {
 		$view->render(TRUE);
 	}
 	
+	/**
+	* Gets the post data from the form
+	*/
+	public function _get_post_data()
+	{
+		$this->post_data = Event::$data;
+	}
+
+	public function _incident_save_data()
+	{
+		$post = $this->post_data;
+		$incident = Event::$data;
+		$report_id = $incident->id;
+			
+		if(isset($post['hidetime']))
+		{
+			$hidetime = ORM::factory("hidetime");
+			$hidetime->incident_id = $report_id;
+			$hidetime->save();
+		}
+		else
+		{
+			$hidetime = ORM::factory("hidetime")->where("incident_id", $report_id)->delete_all();
+		}
+		
+	}
 
 }//end method
 
