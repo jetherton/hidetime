@@ -80,6 +80,7 @@ class hidetime {
 						if($hide_time->loaded)
 						{
 							plugin::add_javascript("hidetime/javascript/hidetime_view_hide.js");
+							Event::add('ushahidi_action.report_meta_after_time', array($this, '_make_date'));
 						}
 					}
 					
@@ -87,6 +88,17 @@ class hidetime {
 			}
 		}
 				
+	}
+	
+	
+	public function _make_date()
+	{
+		$report_id = Event::$data;
+		$report = ORM::factory("incident")->where("id", $report_id)->find();
+		
+		$view = View::factory('hidetime/hidetime_maketime');
+		$view->date = date('M j Y', strtotime($report->incident_date));
+		$view->render(TRUE);
 	}
 	
 	/**
