@@ -4,7 +4,7 @@ website: http://www.ushahidi.com
 description: Gives users the ability to hide time for reports that may not have occured at a finite moment
 version: 0.5
 requires: 2.0
-tested up to: 2.0
+tested up to: 2.1
 author: John Etherton
 author website: http://johnetherton.com
 

@@ -5,6 +5,6 @@ $().ready(
 	function(){ 
 		$('span.r_date' ).css("display", "none");
 		
-		$('#datenotime' ).css("display", "inline");
+		$('#datenotime' ).css("display", "none");
 	});
 	
