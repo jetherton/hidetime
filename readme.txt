@@ -1,6 +1,6 @@
 === About ===
 name: Hide Time
-website: http://www.ushahidi.com
+website: https://github.com/jetherton/hidetime
 description: Gives users the ability to hide time for reports that may not have occured at a finite moment
 version: 0.5
 requires: 2.0
